@@ -3,1388 +3,555 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ficha de Avaliação — Apresentação Científica</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Avaliação por Pares — Apresentação Científica</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --navy: #00612D;
-    --navy-mid: #007A38;
-    --teal: #009B3A;
-    --teal-light: #00B341;
-    --gold: #A8D5B5;
-    --gold-light: #C8ECD4;
-    --cream: #F3FAF5;
-    --cream-dark: #E3F2E9;
-    --text: #0D2B18;
-    --text-muted: #3D6B52;
-    --border: #B8DEC6;
-    --white: #FFFFFF;
-    --danger: #C0392B;
-    --success: #009B3A;
-    --radius: 4px;
-  }
+:root{
+  --green-900:#00612D; --green-700:#007A38; --green-500:#009B3A; --green-300:#A8D5B5; --green-100:#E3F2E9;
+  --bg:#F3FAF5; --card:#fff; --text:#0D2B18; --muted:#3D6B52; --border:#B8DEC6;
+  --warn:#B9770E; --danger:#C0392B; --radius:8px;
+  --l1:#e74c3c; --l2:#e67e22; --l3:#f39c12; --l4:#009B3A; --l5:#00612D;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);line-height:1.45;padding-bottom:96px}
+button,input,select,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #f1c40f;outline-offset:2px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+/* Header */
+header.top{background:var(--green-900);color:#fff;padding:22px 24px 0}
+.top-inner{max-width:980px;margin:0 auto}
+.top h1{font-family:'DM Serif Display',serif;font-weight:400;font-size:26px}
+.top h1 em{color:#C8ECD4}
+.top p{font-size:13px;color:rgba(255,255,255,.65);margin-top:2px}
+nav.tabs{display:flex;gap:4px;margin-top:16px}
+nav.tabs button{background:transparent;border:0;color:rgba(255,255,255,.7);padding:12px 20px;font-weight:600;font-size:14px;cursor:pointer;border-radius:8px 8px 0 0}
+nav.tabs button[aria-selected="true"]{background:var(--bg);color:var(--green-900)}
+nav.tabs .count{background:rgba(255,255,255,.2);border-radius:10px;padding:1px 8px;font-size:12px;margin-left:6px}
+nav.tabs button[aria-selected="true"] .count{background:var(--green-100)}
 
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--cream);
-    color: var(--text);
-    min-height: 100vh;
-    padding: 0;
-  }
+main{max-width:980px;margin:0 auto;padding:24px 16px}
+.view{display:none}.view.active{display:block}
 
-  /* ── HEADER ── */
-  .page-header {
-    background: var(--navy);
-    color: white;
-    padding: 36px 48px 28px;
-    position: relative;
-    overflow: hidden;
-  }
-  .page-header::before {
-    content: '';
-    position: absolute;
-    top: -40px; right: -60px;
-    width: 260px; height: 260px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(26,140,122,0.25) 0%, transparent 70%);
-    pointer-events: none;
-  }
-  .page-header::after {
-    content: '';
-    position: absolute;
-    bottom: -30px; left: 40%;
-    width: 180px; height: 180px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,168,75,0.12) 0%, transparent 70%);
-    pointer-events: events;
-  }
-  .header-top {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 24px;
-    flex-wrap: wrap;
-  }
-  .institution-badge {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    opacity: 0.85;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 500;
-    color: var(--gold-light);
-    margin-bottom: 12px;
-  }
-  .institution-badge span { width: 28px; height: 1px; background: var(--gold); display: inline-block; }
-  .logo-sala {
-    height: 36px;
-    width: auto;
-    object-fit: contain;
-    filter: brightness(0) invert(1);
-    opacity: 0.9;
-    margin-bottom: 14px;
-    display: block;
-  }
-  .header-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 32px;
-    line-height: 1.15;
-    color: white;
-    max-width: 560px;
-  }
-  .header-title em {
-    font-style: italic;
-    color: var(--gold-light);
-  }
-  .header-subtitle {
-    font-size: 13px;
-    color: rgba(255,255,255,0.55);
-    margin-top: 8px;
-    letter-spacing: 0.04em;
-  }
-  .score-display {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 8px;
-    padding: 20px 28px;
-    text-align: center;
-    min-width: 140px;
-    backdrop-filter: blur(6px);
-  }
-  .score-display .score-label {
-    font-size: 10px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.45);
-    margin-bottom: 6px;
-  }
-  .score-display .score-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 42px;
-    font-weight: 500;
-    color: var(--gold-light);
-    line-height: 1;
-  }
-  .score-display .score-max {
-    font-size: 13px;
-    color: rgba(255,255,255,0.3);
-    margin-top: 4px;
-  }
-  .score-display .score-pct {
-    font-size: 12px;
-    font-family: 'DM Mono', monospace;
-    color: var(--teal-light);
-    margin-top: 6px;
-    font-weight: 500;
-  }
-  .score-bar-wrap {
-    margin-top: 14px;
-    height: 4px;
-    background: rgba(255,255,255,0.1);
-    border-radius: 2px;
-    overflow: hidden;
-  }
-  .score-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--teal), var(--gold));
-    border-radius: 2px;
-    transition: width 0.5s ease;
-  }
+/* Cards / forms */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:20px}
+.card h2{font-family:'DM Serif Display',serif;font-weight:400;font-size:20px;margin-bottom:4px}
+.hint{font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:14px}
+.field label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px}
+.field label .req{color:var(--danger)}
+.field input,.field select,.field textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:10px 12px;background:#fff;font-size:15px}
+.field textarea{min-height:76px;resize:vertical}
+.field.invalid input,.field.invalid select{border-color:var(--danger)}
+.err{color:var(--danger);font-size:12px;margin-top:4px;min-height:0}
+.btn{border:0;border-radius:6px;padding:11px 18px;font-weight:600;font-size:14px;cursor:pointer;background:var(--green-500);color:#fff}
+.btn:hover{background:var(--green-700)}
+.btn.sec{background:#fff;color:var(--green-900);border:1px solid var(--border)}
+.btn.sec:hover{background:var(--green-100)}
+.btn.danger{background:#fff;color:var(--danger);border:1px solid #e6b0aa}
+.btn.small{padding:6px 12px;font-size:12px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
 
-  /* ── META FIELDS ── */
-  .meta-strip {
-    background: var(--navy-mid);
-    padding: 18px 48px;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
-    border-bottom: 2px solid var(--teal);
-  }
-  .meta-field label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 6px;
-  }
-  .meta-field input, .meta-field select {
-    background: rgba(255,255,255,0.07);
-    border: 1px solid rgba(255,255,255,0.15);
-    border-radius: var(--radius);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    padding: 8px 12px;
-    width: 100%;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .meta-field input:focus, .meta-field select:focus {
-    border-color: var(--teal-light);
-  }
-  .meta-field input::placeholder { color: rgba(255,255,255,0.25); }
-  .meta-field select option { background: var(--navy); color: white; }
+/* Product status banner (evaluation tab) */
+.banner{margin-top:14px;padding:12px 14px;border-radius:6px;font-size:14px;border:1px solid var(--border);background:var(--green-100)}
+.banner.warn{background:#fdf2e0;border-color:#f0d29a}
+.banner.bad{background:#fbeaea;border-color:#e6b0aa;color:#7b241c}
 
-  /* ── MAIN CONTENT ── */
-  .main {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 40px 32px 80px;
-  }
+/* Sections */
+details.sec{background:#fff;border:1px solid var(--border);border-radius:var(--radius);margin-bottom:16px;overflow:hidden}
+details.sec>summary{list-style:none;cursor:pointer;display:flex;gap:12px;align-items:center;padding:14px 18px;background:var(--green-900);color:#fff}
+details.sec>summary::-webkit-details-marker{display:none}
+.sec-num{font-family:'DM Mono',monospace;font-size:12px;background:rgba(255,255,255,.15);padding:3px 8px;border-radius:4px}
+.sec-title{font-family:'DM Serif Display',serif;font-style:italic;font-size:17px;flex:1}
+.sec-pts{font-family:'DM Mono',monospace;font-size:12px;background:rgba(255,255,255,.15);padding:3px 10px;border-radius:4px;white-space:nowrap}
+.sec-tag{font-size:10px;letter-spacing:.08em;text-transform:uppercase;border:1px solid rgba(255,255,255,.4);padding:2px 8px;border-radius:10px;white-space:nowrap}
+.sec-tag.oral{background:#f1c40f;color:#3b2f00;border-color:#f1c40f}
+.sec-done{font-size:12px;color:#C8ECD4;white-space:nowrap}
+.criterion{padding:16px 18px;border-bottom:1px solid var(--green-100)}
+.criterion.missing{background:#fff6f5;box-shadow:inset 4px 0 0 var(--danger)}
+.crit-name{font-weight:600;font-size:15px}
+.crit-desc{font-size:13px;color:var(--muted);margin:2px 0 10px}
+.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;max-width:560px}
+.scale label{cursor:pointer;text-align:center}
+.scale span.opt{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;min-height:56px;border:1.5px solid var(--border);border-radius:8px;background:#fff;transition:.12s}
+.scale span.opt b{font-family:'DM Mono',monospace;font-size:17px}
+.scale span.opt small{font-size:11px;color:var(--muted)}
+.scale label:hover span.opt{border-color:var(--green-500);background:var(--green-100)}
+.scale input:checked+span.opt{color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.scale input:checked+span.opt small{color:rgba(255,255,255,.9)}
+.scale input[value="1"]:checked+span.opt{background:var(--l1);border-color:var(--l1)}
+.scale input[value="2"]:checked+span.opt{background:var(--l2);border-color:var(--l2)}
+.scale input[value="3"]:checked+span.opt{background:var(--l3);border-color:var(--l3)}
+.scale input[value="4"]:checked+span.opt{background:var(--l4);border-color:var(--l4)}
+.scale input[value="5"]:checked+span.opt{background:var(--l5);border-color:var(--l5)}
+.scale input:focus-visible+span.opt{outline:3px solid #f1c40f;outline-offset:2px}
+.crit-pts{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-top:6px;min-height:16px}
+.sec-comment{padding:14px 18px 18px;background:var(--bg)}
 
-  /* ── SECTION ── */
-  .section {
-    margin-bottom: 32px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid var(--border);
-    overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-  }
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 18px 24px;
-    background: var(--navy);
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.2s;
-  }
-  .section-header:hover { background: var(--navy-mid); }
-  .section-header-left {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
-  .section-number {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--gold);
-    letter-spacing: 0.1em;
-    background: rgba(200,168,75,0.15);
-    border: 1px solid rgba(200,168,75,0.25);
-    border-radius: 3px;
-    padding: 3px 8px;
-  }
-  .section-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 17px;
-    color: white;
-    font-style: italic;
-  }
-  .section-points-badge {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--teal-light);
-    background: rgba(26,184,154,0.12);
-    border: 1px solid rgba(26,184,154,0.25);
-    border-radius: 3px;
-    padding: 3px 10px;
-    white-space: nowrap;
-  }
-  .chevron {
-    color: rgba(255,255,255,0.4);
-    font-size: 14px;
-    transition: transform 0.25s;
-    margin-left: 12px;
-  }
-  .section.collapsed .chevron { transform: rotate(-90deg); }
-  .section-body {
-    padding: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-  }
-  .section.collapsed .section-body { max-height: 0 !important; }
+/* Sticky bar */
+.sticky{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:2px solid var(--green-500);padding:10px 16px;z-index:20;box-shadow:0 -4px 14px rgba(0,0,0,.08)}
+.sticky-inner{max-width:980px;margin:0 auto;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.prog{flex:1;min-width:160px}
+.prog-top{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-bottom:4px}
+.bar{height:8px;background:var(--green-100);border-radius:4px;overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--green-500),#00B341);transition:width .3s}
+.total{font-family:'DM Mono',monospace;text-align:right}
+.total b{font-size:24px;color:var(--green-900)}
+.total small{display:block;font-size:11px;color:var(--muted)}
 
-  /* ── CRITERIA TABLE ── */
-  .criteria-table { width: 100%; border-collapse: collapse; }
-  .criteria-table thead tr {
-    background: var(--cream-dark);
-    border-bottom: 1px solid var(--border);
-  }
-  .criteria-table thead th {
-    padding: 10px 16px;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    font-weight: 600;
-    text-align: left;
-  }
-  .criteria-table thead th.right { text-align: right; }
-  .criteria-table thead th.center { text-align: center; }
-  .criteria-row {
-    border-bottom: 1px solid var(--cream-dark);
-    transition: background 0.15s;
-  }
-  .criteria-row:last-child { border-bottom: none; }
-  .criteria-row:hover { background: #fafaf8; }
-  .criteria-row td {
-    padding: 14px 16px;
-    vertical-align: top;
-  }
-  .criteria-name {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    margin-bottom: 3px;
-  }
-  .criteria-desc {
-    font-size: 12px;
-    color: var(--text-muted);
-    line-height: 1.5;
-  }
-  .criteria-weight {
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--text-muted);
-    white-space: nowrap;
-    text-align: right;
-    padding-top: 2px;
-  }
+/* Result */
+.concept{display:inline-block;padding:6px 14px;border-radius:20px;font-weight:600;font-size:13px}
+.c-insuf{background:#fbeaea;color:#922b21}.c-reg{background:#fdebd0;color:#935116}.c-bom{background:#fcf3cf;color:#7d6608}.c-otimo{background:#d5f5e3;color:#1e8449}.c-exc{background:#00612D;color:#fff}.c-pend{background:#eee;color:#666}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.mini{border:1px solid var(--border);border-radius:6px;padding:10px 12px;background:var(--bg)}
+.mini .l{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.mini .v{font-family:'DM Mono',monospace;font-size:22px;color:var(--green-900)}
+.mini .s{font-size:11px;color:var(--muted)}
 
-  /* ── RATING STARS / BUTTONS ── */
-  .rating-group {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-    justify-content: center;
-  }
-  .rating-btn {
-    width: 34px; height: 34px;
-    border-radius: 50%;
-    border: 1.5px solid var(--border);
-    background: white;
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-muted);
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .rating-btn:hover {
-    border-color: var(--teal);
-    color: var(--teal);
-    background: rgba(26,140,122,0.06);
-  }
-  .rating-btn.active {
-    background: var(--navy);
-    border-color: var(--navy);
-    color: white;
-    box-shadow: 0 2px 8px rgba(11,31,58,0.25);
-  }
-  .rating-btn.active.level-1 { background: #e74c3c; border-color: #e74c3c; }
-  .rating-btn.active.level-2 { background: #e67e22; border-color: #e67e22; }
-  .rating-btn.active.level-3 { background: #f39c12; border-color: #f39c12; }
-  .rating-btn.active.level-4 { background: var(--teal); border-color: var(--teal); }
-  .rating-btn.active.level-5 { background: var(--navy); border-color: var(--navy); }
+/* Panel */
+.prod{border:1px solid var(--border);border-radius:var(--radius);background:#fff;margin-bottom:12px;overflow:hidden}
+.prod-head{display:flex;gap:12px;align-items:center;padding:14px 16px;flex-wrap:wrap}
+.prod-head .info{flex:1;min-width:200px}
+.prod-head .t{font-weight:600}
+.prod-head .a{font-size:13px;color:var(--muted)}
+.badge{font-size:12px;font-weight:600;padding:4px 10px;border-radius:12px;white-space:nowrap}
+.b-0{background:#fbeaea;color:#922b21}.b-1{background:#fdebd0;color:#935116}.b-ok{background:#d5f5e3;color:#1e8449}
+.prod-body{padding:0 16px 16px;border-top:1px solid var(--green-100)}
+table.t{width:100%;border-collapse:collapse;font-size:13px;margin-top:12px}
+table.t th,table.t td{padding:8px 10px;border-bottom:1px solid var(--green-100);text-align:left}
+table.t th{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+table.t td.n,table.t th.n{text-align:right;font-family:'DM Mono',monospace}
+table.t tr.avg td{font-weight:700;background:var(--green-100)}
+.scroll{overflow-x:auto}
+.comments{margin-top:12px;font-size:13px}
+.comments blockquote{border-left:3px solid var(--green-300);padding:4px 10px;margin:6px 0;background:var(--bg)}
+.empty{text-align:center;padding:30px;color:var(--muted)}
 
-  /* ── RUBRIC LABELS ── */
-  .rubric-labels {
-    display: flex;
-    justify-content: center;
-    gap: 6px;
-    margin-top: 4px;
-  }
-  .rubric-label {
-    font-size: 8px;
-    width: 34px;
-    text-align: center;
-    color: var(--text-muted);
-    letter-spacing: 0.03em;
-    line-height: 1.3;
-  }
+#toast{position:fixed;top:16px;left:50%;transform:translateX(-50%);background:var(--green-900);color:#fff;padding:12px 20px;border-radius:8px;z-index:50;opacity:0;pointer-events:none;transition:.25s;max-width:90vw;font-size:14px}
+#toast.show{opacity:1}#toast.bad{background:var(--danger)}
 
-  /* ── SECTION SCORE BAR ── */
-  .section-score-bar {
-    padding: 14px 24px;
-    background: var(--cream);
-    border-top: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .section-score-label {
-    font-size: 11px;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    white-space: nowrap;
-  }
-  .section-progress {
-    flex: 1;
-    height: 6px;
-    background: var(--cream-dark);
-    border-radius: 3px;
-    overflow: hidden;
-  }
-  .section-progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--teal), var(--teal-light));
-    border-radius: 3px;
-    transition: width 0.4s ease;
-    width: 0%;
-  }
-  .section-score-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--teal);
-    white-space: nowrap;
-    min-width: 80px;
-    text-align: right;
-  }
-
-  /* ── COMMENTS ── */
-  .comment-area {
-    padding: 16px 24px 20px;
-    background: white;
-    border-top: 1px solid var(--cream-dark);
-  }
-  .comment-area label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--text-muted);
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  .comment-area textarea {
-    width: 100%;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    color: var(--text);
-    padding: 10px 14px;
-    resize: vertical;
-    min-height: 72px;
-    outline: none;
-    transition: border-color 0.2s;
-    background: var(--cream);
-  }
-  .comment-area textarea:focus { border-color: var(--teal); background: white; }
-  .comment-area textarea::placeholder { color: var(--text-muted); }
-
-  /* ── FINAL PANEL ── */
-  .final-panel {
-    background: var(--navy);
-    border-radius: 8px;
-    padding: 32px 36px;
-    color: white;
-    margin-bottom: 32px;
-    position: relative;
-    overflow: hidden;
-  }
-  .final-panel::before {
-    content: '';
-    position: absolute;
-    top: -60px; right: -60px;
-    width: 200px; height: 200px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(200,168,75,0.15) 0%, transparent 70%);
-  }
-  .final-panel-title {
-    font-family: 'DM Serif Display', serif;
-    font-size: 20px;
-    font-style: italic;
-    color: var(--gold-light);
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .final-panel-title::before {
-    content: '';
-    display: inline-block;
-    width: 32px; height: 1px;
-    background: var(--gold);
-  }
-  .scores-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 16px;
-    margin-bottom: 28px;
-  }
-  .score-card {
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: 6px;
-    padding: 16px;
-  }
-  .score-card-label {
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 8px;
-    line-height: 1.4;
-  }
-  .score-card-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 26px;
-    font-weight: 500;
-    color: white;
-    line-height: 1;
-  }
-  .score-card-sub {
-    font-size: 11px;
-    color: rgba(255,255,255,0.35);
-    margin-top: 4px;
-  }
-
-  .concept-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 20px;
-    border-radius: 6px;
-    font-family: 'DM Serif Display', serif;
-    font-size: 18px;
-    margin-bottom: 24px;
-  }
-  .concept-badge.insuficiente { background: rgba(192,57,43,0.2); color: #e74c3c; border: 1px solid rgba(192,57,43,0.3); }
-  .concept-badge.regular { background: rgba(230,126,34,0.2); color: #e67e22; border: 1px solid rgba(230,126,34,0.3); }
-  .concept-badge.bom { background: rgba(243,156,18,0.2); color: #f39c12; border: 1px solid rgba(243,156,18,0.3); }
-  .concept-badge.otimo { background: rgba(26,140,122,0.2); color: var(--teal-light); border: 1px solid rgba(26,140,122,0.3); }
-  .concept-badge.excelente { background: rgba(200,168,75,0.2); color: var(--gold-light); border: 1px solid rgba(200,168,75,0.3); }
-
-  .feedback-global label {
-    display: block;
-    font-size: 10px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.4);
-    margin-bottom: 8px;
-    font-weight: 600;
-  }
-  .feedback-global textarea {
-    width: 100%;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: var(--radius);
-    color: white;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    padding: 12px 16px;
-    resize: vertical;
-    min-height: 88px;
-    outline: none;
-    transition: border-color 0.2s;
-  }
-  .feedback-global textarea:focus { border-color: var(--teal-light); }
-  .feedback-global textarea::placeholder { color: rgba(255,255,255,0.2); }
-
-  /* ── ACTIONS ── */
-  .actions {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 12px 24px;
-    border-radius: 6px;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    font-weight: 600;
-    cursor: pointer;
-    border: none;
-    letter-spacing: 0.04em;
-    transition: all 0.2s;
-  }
-  .btn-primary {
-    background: var(--teal);
-    color: white;
-    box-shadow: 0 2px 12px rgba(26,140,122,0.35);
-  }
-  .btn-primary:hover { background: var(--teal-light); transform: translateY(-1px); }
-  .btn-secondary {
-    background: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.7);
-    border: 1px solid rgba(255,255,255,0.15);
-  }
-  .btn-secondary:hover { background: rgba(255,255,255,0.12); color: white; }
-  .btn-gold {
-    background: var(--gold);
-    color: var(--navy);
-  }
-  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
-
-  /* ── LEGEND ── */
-  .legend {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-    padding: 16px 32px;
-    background: white;
-    border-top: 1px solid var(--border);
-    margin-bottom: 0;
-  }
-  .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 11px;
-    color: var(--text-muted);
-  }
-  .legend-dot {
-    width: 10px; height: 10px;
-    border-radius: 50%;
-    flex-shrink: 0;
-  }
-
-  /* ── PRINT ── */
-  @media print {
-    .page-header { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-    .section.collapsed .section-body { max-height: none !important; }
-    .actions, .legend { display: none; }
-  }
-
-  /* ── RESPONSIVE ── */
-  @media (max-width: 640px) {
-    .page-header { padding: 24px 20px 20px; }
-    .meta-strip { padding: 16px 20px; }
-    .main { padding: 24px 16px 60px; }
-    .header-title { font-size: 24px; }
-    .score-display { min-width: 110px; padding: 14px 18px; }
-    .score-display .score-value { font-size: 32px; }
-    .scores-grid { grid-template-columns: 1fr 1fr; }
-    .criteria-table thead th.center, .criteria-table .rating-cell { min-width: 180px; }
-  }
+@media(max-width:640px){
+  .scale{gap:5px}.scale span.opt small{font-size:9px}
+  .top h1{font-size:21px}.sec-tag,.sec-done{display:none}
+  .total b{font-size:20px}
+}
+@media print{
+  header.top nav,.sticky,.btn,#toast,.no-print{display:none!important}
+  body{background:#fff;padding:0}
+  .view{display:none!important}.view.print-me{display:block!important}
+  details.sec{break-inside:avoid}
+  .prod-body{display:block!important}
+}
 </style>
 </head>
 <body>
+<header class="top">
+  <div class="top-inner">
+    <h1>Avaliação por Pares de <em>Apresentação Científica</em></h1>
+    <p>Programa de Residência · Vigilância Epidemiológica &amp; Inteligência em Saúde</p>
+    <nav class="tabs" role="tablist">
+      <button role="tab" id="tab-aval" aria-selected="true" data-view="aval">Avaliar</button>
+      <button role="tab" id="tab-painel" aria-selected="false" data-view="painel">Produtos e resultados <span class="count" id="count-prod">0</span></button>
+    </nav>
+  </div>
+</header>
 
-<!-- HEADER -->
-<div class="page-header">
-  <div class="header-top">
-    <div>
-
-
-      <h1 class="header-title">Ficha de Avaliação de <em>Apresentação Científica</em></h1>
-      <p class="header-subtitle">Programa de Residência · Vigilância Epidemiológica & Inteligência em Saúde</p>
-    </div>
-    <div class="score-display">
-      <div class="score-label">Pontuação Total</div>
-      <div class="score-value" id="total-score">0</div>
-      <div class="score-max">de 100 pts</div>
-      <div class="score-pct" id="total-pct">0%</div>
-      <div class="score-bar-wrap">
-        <div class="score-bar-fill" id="total-bar" style="width:0%"></div>
+<main>
+<!-- ============ VIEW: AVALIAR ============ -->
+<section class="view active" id="view-aval">
+  <div class="card">
+    <h2>1. Quem e o que você vai avaliar</h2>
+    <p class="hint">Cada produto precisa de revisão de pelo menos <b id="min-txt">2</b> pessoas, que avaliam o conteúdo completo e a apresentação oral. Você não pode avaliar o seu próprio produto.</p>
+    <div class="grid">
+      <div class="field" id="f-produto">
+        <label for="sel-produto">Produto apresentado <span class="req">*</span></label>
+        <select id="sel-produto"></select>
+        <div class="err" id="e-produto"></div>
+      </div>
+      <div class="field" id="f-avaliador">
+        <label for="inp-avaliador">Seu nome (avaliador) <span class="req">*</span></label>
+        <input id="inp-avaliador" type="text" autocomplete="name" placeholder="Nome completo">
+        <div class="err" id="e-avaliador"></div>
+      </div>
+      <div class="field">
+        <label for="inp-data">Data da avaliação</label>
+        <input id="inp-data" type="date">
       </div>
     </div>
-  </div>
-</div>
-
-<!-- META STRIP -->
-<div class="meta-strip">
-  <div class="meta-field">
-    <label>Nome do Residente</label>
-    <input type="text" id="meta-residente" placeholder="Nome completo">
-  </div>
-  <div class="meta-field">
-    <label>Avaliador</label>
-    <input type="text" id="meta-avaliador" placeholder="Nome / cargo">
-  </div>
-  <div class="meta-field">
-    <label>Título da Apresentação</label>
-    <input type="text" id="meta-titulo" placeholder="Tema / produto apresentado">
-  </div>
-  <div class="meta-field">
-    <label>Data</label>
-    <input type="date" id="meta-data">
-  </div>
-  <div class="meta-field">
-    <label>Período da Residência</label>
-    <select id="meta-periodo">
-      <option value="">Selecionar</option>
-      <option>1º Semestre — Ano 1</option>
-      <option>2º Semestre — Ano 1</option>
-      <option>1º Semestre — Ano 2</option>
-      <option>2º Semestre — Ano 2</option>
-    </select>
-  </div>
-</div>
-
-<!-- LEGEND -->
-<div class="legend">
-  <div class="legend-item"><div class="legend-dot" style="background:#e74c3c"></div> 1 — Insatisfatório</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#e67e22"></div> 2 — Regular</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#f39c12"></div> 3 — Satisfatório</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#1A8C7A"></div> 4 — Bom</div>
-  <div class="legend-item"><div class="legend-dot" style="background:#0B1F3A"></div> 5 — Excelente</div>
-</div>
-
-<!-- MAIN -->
-<div class="main">
-
-  <!-- SEÇÃO 1: CONTEÚDO CIENTÍFICO -->
-  <div class="section" id="sec-1">
-    <div class="section-header" onclick="toggleSection('sec-1')">
-      <div class="section-header-left">
-        <span class="section-number">01</span>
-        <span class="section-title">Conteúdo Científico & Fundamentação Teórica</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="section-points-badge" id="sec-1-pts">0 / 25 pts</span>
-        <span class="chevron">▾</span>
-      </div>
-    </div>
-    <div class="section-body" id="sec-1-body">
-      <table class="criteria-table">
-        <thead>
-          <tr>
-            <th style="width:40%">Critério</th>
-            <th class="right" style="width:10%">Peso</th>
-            <th class="center" style="width:35%">Avaliação (1–5)</th>
-            <th class="right" style="width:15%">Pontos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="criteria-row" data-section="1" data-id="1a" data-weight="1.25">
-            <td>
-              <div class="criteria-name">Atualidade e relevância das referências</div>
-              <div class="criteria-desc">Utiliza fontes recentes, indexadas e pertinentes ao tema</div>
-            </td>
-            <td class="criteria-weight">× 1,25</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('1a',1,1.25)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('1a',2,1.25)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('1a',3,1.25)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('1a',4,1.25)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('1a',5,1.25)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels">
-                <div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div>
-                <div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div>
-                <div class="rubric-label">Excelen.</div>
-              </div>
-            </td>
-            <td class="criteria-weight" id="pts-1a" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="1" data-id="1b" data-weight="1.25">
-            <td>
-              <div class="criteria-name">Domínio do tema e profundidade conceitual</div>
-              <div class="criteria-desc">Demonstra compreensão sólida dos conceitos epidemiológicos e clínicos</div>
-            </td>
-            <td class="criteria-weight">× 1,25</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('1b',1,1.25)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('1b',2,1.25)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('1b',3,1.25)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('1b',4,1.25)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('1b',5,1.25)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels">
-                <div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div>
-                <div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div>
-                <div class="rubric-label">Excelen.</div>
-              </div>
-            </td>
-            <td class="criteria-weight" id="pts-1b" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="1" data-id="1c" data-weight="1.25">
-            <td>
-              <div class="criteria-name">Contextualização e justificativa</div>
-              <div class="criteria-desc">Apresenta o problema com clareza, situando-o no contexto de saúde pública</div>
-            </td>
-            <td class="criteria-weight">× 1,25</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('1c',1,1.25)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('1c',2,1.25)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('1c',3,1.25)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('1c',4,1.25)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('1c',5,1.25)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels">
-                <div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div>
-                <div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div>
-                <div class="rubric-label">Excelen.</div>
-              </div>
-            </td>
-            <td class="criteria-weight" id="pts-1c" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="1" data-id="1d" data-weight="1.25">
-            <td>
-              <div class="criteria-name">Objetivos claros e coerentes</div>
-              <div class="criteria-desc">Os objetivos são mensuráveis, alinhados à pergunta de pesquisa e bem delimitados</div>
-            </td>
-            <td class="criteria-weight">× 1,25</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('1d',1,1.25)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('1d',2,1.25)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('1d',3,1.25)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('1d',4,1.25)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('1d',5,1.25)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels">
-                <div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div>
-                <div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div>
-                <div class="rubric-label">Excelen.</div>
-              </div>
-            </td>
-            <td class="criteria-weight" id="pts-1d" style="color:var(--text)">—</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="section-score-bar">
-        <span class="section-score-label">Seção 1</span>
-        <div class="section-progress"><div class="section-progress-fill" id="prog-1"></div></div>
-        <span class="section-score-value" id="label-sec-1">0 / 25 pts</span>
-      </div>
-      <div class="comment-area">
-        <label>Observações — Conteúdo Científico</label>
-        <textarea placeholder="Pontos fortes, lacunas identificadas, sugestões de melhoria..."></textarea>
-      </div>
-    </div>
+    <div id="prod-banner"></div>
   </div>
 
-  <!-- SEÇÃO 2: METODOLOGIA -->
-  <div class="section" id="sec-2">
-    <div class="section-header" onclick="toggleSection('sec-2')">
-      <div class="section-header-left">
-        <span class="section-number">02</span>
-        <span class="section-title">Metodologia & Rigor Epidemiológico</span>
+  <form id="form" novalidate>
+    <div id="sections"></div>
+
+    <div class="card">
+      <h2>Parecer global</h2>
+      <p class="hint">Síntese da sua avaliação: pontos de destaque e sugestões prioritárias para o autor.</p>
+      <div class="field" style="margin-top:12px">
+        <label for="parecer" class="sr-only">Parecer global</label>
+        <textarea id="parecer" placeholder="Escreva aqui o seu parecer…"></textarea>
       </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="section-points-badge" id="sec-2-pts">0 / 25 pts</span>
-        <span class="chevron">▾</span>
-      </div>
+      <div id="result-box" style="margin-top:14px"></div>
     </div>
-    <div class="section-body" id="sec-2-body">
-      <table class="criteria-table">
-        <thead>
-          <tr>
-            <th style="width:40%">Critério</th>
-            <th class="right" style="width:10%">Peso</th>
-            <th class="center" style="width:35%">Avaliação (1–5)</th>
-            <th class="right" style="width:15%">Pontos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="criteria-row" data-section="2" data-id="2a" data-weight="1.25">
-            <td>
-              <div class="criteria-name">Adequação do delineamento metodológico</div>
-              <div class="criteria-desc">O método escolhido é apropriado para responder à pergunta de pesquisa</div>
-            </td>
-            <td class="criteria-weight">× 1,25</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('2a',1,1.25)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('2a',2,1.25)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('2a',3,1.25)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('2a',4,1.25)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('2a',5,1.25)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-2a" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="2" data-id="2b" data-weight="1.25">
-            <td>
-              <div class="criteria-name">Qualidade e representatividade dos dados</div>
-              <div class="criteria-desc">Fonte de dados confiável, com justificativa da população/amostra utilizada</div>
-            </td>
-            <td class="criteria-weight">× 1,25</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('2b',1,1.25)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('2b',2,1.25)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('2b',3,1.25)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('2b',4,1.25)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('2b',5,1.25)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-2b" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="2" data-id="2c" data-weight="1.25">
-            <td>
-              <div class="criteria-name">Aplicação correta de indicadores e métricas</div>
-              <div class="criteria-desc">Indicadores epidemiológicos calculados e interpretados corretamente</div>
-            </td>
-            <td class="criteria-weight">× 1,25</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('2c',1,1.25)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('2c',2,1.25)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('2c',3,1.25)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('2c',4,1.25)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('2c',5,1.25)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-2c" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="2" data-id="2d" data-weight="1.25">
-            <td>
-              <div class="criteria-name">Limitações reconhecidas e vieses discutidos</div>
-              <div class="criteria-desc">Aborda potenciais vieses, confundidores e limitações do estudo com honestidade científica</div>
-            </td>
-            <td class="criteria-weight">× 1,25</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('2d',1,1.25)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('2d',2,1.25)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('2d',3,1.25)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('2d',4,1.25)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('2d',5,1.25)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-2d" style="color:var(--text)">—</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="section-score-bar">
-        <span class="section-score-label">Seção 2</span>
-        <div class="section-progress"><div class="section-progress-fill" id="prog-2"></div></div>
-        <span class="section-score-value" id="label-sec-2">0 / 25 pts</span>
+
+    <div class="row no-print" style="margin-bottom:20px">
+      <button type="submit" class="btn">Enviar avaliação</button>
+      <button type="button" class="btn sec" id="btn-next">Ir ao próximo critério sem nota</button>
+      <button type="button" class="btn danger" id="btn-reset">Limpar rascunho</button>
+    </div>
+  </form>
+
+  <div class="sticky no-print">
+    <div class="sticky-inner">
+      <div class="prog">
+        <div class="prog-top"><span id="prog-txt">0 de 18 critérios</span><span id="prog-pct">0%</span></div>
+        <div class="bar"><i id="prog-bar"></i></div>
       </div>
-      <div class="comment-area">
-        <label>Observações — Metodologia</label>
-        <textarea placeholder="Rigor metodológico, uso de sistemas de informação em saúde, análise estatística..."></textarea>
-      </div>
+      <div class="total"><b id="tot">0,0</b> <span>/ 100</span><small id="tot-sub">rascunho salvo automaticamente</small></div>
     </div>
   </div>
+</section>
 
-  <!-- SEÇÃO 3: APRESENTAÇÃO ORAL -->
-  <div class="section" id="sec-3">
-    <div class="section-header" onclick="toggleSection('sec-3')">
-      <div class="section-header-left">
-        <span class="section-number">03</span>
-        <span class="section-title">Apresentação Oral & Comunicação</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="section-points-badge" id="sec-3-pts">0 / 20 pts</span>
-        <span class="chevron">▾</span>
-      </div>
-    </div>
-    <div class="section-body" id="sec-3-body">
-      <table class="criteria-table">
-        <thead>
-          <tr>
-            <th style="width:40%">Critério</th>
-            <th class="right" style="width:10%">Peso</th>
-            <th class="center" style="width:35%">Avaliação (1–5)</th>
-            <th class="right" style="width:15%">Pontos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="criteria-row" data-section="3" data-id="3a" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Clareza e fluência na exposição oral</div>
-              <div class="criteria-desc">Comunicação acessível, ritmo adequado, dicção e vocabulário técnico apropriado</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('3a',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('3a',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('3a',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('3a',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('3a',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-3a" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="3" data-id="3b" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Gestão do tempo</div>
-              <div class="criteria-desc">Respeita o tempo estipulado sem comprometer conteúdo essencial</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('3b',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('3b',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('3b',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('3b',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('3b',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-3b" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="3" data-id="3c" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Postura, segurança e engajamento</div>
-              <div class="criteria-desc">Demonstra confiança, contato visual e capacidade de engajar a audiência</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('3c',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('3c',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('3c',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('3c',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('3c',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-3c" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="3" data-id="3d" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Resposta a perguntas e defesa das ideias</div>
-              <div class="criteria-desc">Responde com precisão, fundamenta posições e aceita críticas construtivas</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('3d',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('3d',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('3d',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('3d',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('3d',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-3d" style="color:var(--text)">—</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="section-score-bar">
-        <span class="section-score-label">Seção 3</span>
-        <div class="section-progress"><div class="section-progress-fill" id="prog-3"></div></div>
-        <span class="section-score-value" id="label-sec-3">0 / 20 pts</span>
-      </div>
-      <div class="comment-area">
-        <label>Observações — Apresentação Oral</label>
-        <textarea placeholder="Aspectos comunicativos, postura, gestão do tempo..."></textarea>
-      </div>
-    </div>
+<!-- ============ VIEW: PAINEL ============ -->
+<section class="view" id="view-painel">
+  <div class="card no-print">
+    <h2>Cadastrar produto</h2>
+    <p class="hint">Cadastre cada produto antes da apresentação. O identificador é gerado a partir do título e do autor, então cadastros iguais em computadores diferentes se juntam ao importar.</p>
+    <form id="form-prod" class="grid" novalidate>
+      <div class="field"><label for="p-titulo">Título / produto <span class="req">*</span></label><input id="p-titulo" type="text" placeholder="Ex.: Painel de SRAG na RIDE-DF"></div>
+      <div class="field"><label for="p-autor">Autor (residente) <span class="req">*</span></label><input id="p-autor" type="text" placeholder="Nome completo"></div>
+      <div class="field"><label for="p-periodo">Período</label>
+        <select id="p-periodo"><option value="">Selecionar</option><option>1º Semestre — Ano 1</option><option>2º Semestre — Ano 1</option><option>1º Semestre — Ano 2</option><option>2º Semestre — Ano 2</option></select></div>
+      <div class="field" style="align-self:end"><button class="btn" type="submit">Adicionar produto</button></div>
+    </form>
   </div>
 
-  <!-- SEÇÃO 4: VISUALIZAÇÃO DE DADOS -->
-  <div class="section" id="sec-4">
-    <div class="section-header" onclick="toggleSection('sec-4')">
-      <div class="section-header-left">
-        <span class="section-number">04</span>
-        <span class="section-title">Visualização de Dados & Qualidade Visual</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="section-points-badge" id="sec-4-pts">0 / 15 pts</span>
-        <span class="chevron">▾</span>
+  <div class="card">
+    <div class="row" style="justify-content:space-between">
+      <div><h2>Produtos e revisões</h2><p class="hint">Resultado consolidado = média entre os revisores. Só é considerado completo com o mínimo de revisores.</p></div>
+      <div class="row no-print">
+        <label class="hint" for="inp-min">Mínimo de revisores</label>
+        <input id="inp-min" type="number" min="1" max="10" value="2" style="width:64px;border:1px solid var(--border);border-radius:6px;padding:6px 8px">
       </div>
     </div>
-    <div class="section-body" id="sec-4-body">
-      <table class="criteria-table">
-        <thead>
-          <tr>
-            <th style="width:40%">Critério</th>
-            <th class="right" style="width:10%">Peso</th>
-            <th class="center" style="width:35%">Avaliação (1–5)</th>
-            <th class="right" style="width:15%">Pontos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="criteria-row" data-section="4" data-id="4a" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Adequação do tipo de gráfico/tabela ao dado</div>
-              <div class="criteria-desc">O recurso visual escolhido comunica o dado de forma eficiente e sem distorção</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('4a',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('4a',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('4a',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('4a',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('4a',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-4a" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="4" data-id="4b" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Clareza de títulos, legendas e eixos</div>
-              <div class="criteria-desc">Elementos visuais devidamente identificados, com unidades e fontes indicadas</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('4b',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('4b',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('4b',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('4b',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('4b',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-4b" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="4" data-id="4c" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Estética e coerência visual dos slides</div>
-              <div class="criteria-desc">Design limpo, hierarquia tipográfica, paleta coerente e ausência de poluição visual</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('4c',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('4c',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('4c',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('4c',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('4c',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-4c" style="color:var(--text)">—</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="section-score-bar">
-        <span class="section-score-label">Seção 4</span>
-        <div class="section-progress"><div class="section-progress-fill" id="prog-4"></div></div>
-        <span class="section-score-value" id="label-sec-4">0 / 15 pts</span>
-      </div>
-      <div class="comment-area">
-        <label>Observações — Visualização de Dados</label>
-        <textarea placeholder="Qualidade dos gráficos, dashboards, uso de sistemas como SIVEP-Gripe..."></textarea>
-      </div>
+    <div class="row no-print" style="margin-top:12px">
+      <button class="btn sec small" id="btn-exp">Exportar tudo (JSON)</button>
+      <button class="btn sec small" id="btn-imp">Importar JSON de outro avaliador</button>
+      <button class="btn sec small" id="btn-csv">Exportar resumo (CSV)</button>
+      <button class="btn sec small" id="btn-print">Imprimir</button>
+      <input type="file" id="file-imp" accept="application/json,.json" class="sr-only">
     </div>
   </div>
-
-  <!-- SEÇÃO 5: DISCUSSÃO CRÍTICA -->
-  <div class="section" id="sec-5">
-    <div class="section-header" onclick="toggleSection('sec-5')">
-      <div class="section-header-left">
-        <span class="section-number">05</span>
-        <span class="section-title">Discussão Crítica & Interpretação de Resultados</span>
-      </div>
-      <div style="display:flex;align-items:center;gap:8px">
-        <span class="section-points-badge" id="sec-5-pts">0 / 15 pts</span>
-        <span class="chevron">▾</span>
-      </div>
-    </div>
-    <div class="section-body" id="sec-5-body">
-      <table class="criteria-table">
-        <thead>
-          <tr>
-            <th style="width:40%">Critério</th>
-            <th class="right" style="width:10%">Peso</th>
-            <th class="center" style="width:35%">Avaliação (1–5)</th>
-            <th class="right" style="width:15%">Pontos</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="criteria-row" data-section="5" data-id="5a" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Interpretação coerente dos resultados</div>
-              <div class="criteria-desc">Os achados são discutidos com base em evidências e sem extrapolações indevidas</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('5a',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('5a',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('5a',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('5a',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('5a',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-5a" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="5" data-id="5b" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Comparação com literatura e protocolos vigentes</div>
-              <div class="criteria-desc">Resultados contextualizados com publicações e diretrizes do MS / OPAS / OMS</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('5b',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('5b',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('5b',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('5b',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('5b',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-5b" style="color:var(--text)">—</td>
-          </tr>
-          <tr class="criteria-row" data-section="5" data-id="5c" data-weight="1.0">
-            <td>
-              <div class="criteria-name">Proposição de recomendações aplicáveis</div>
-              <div class="criteria-desc">Conclusões práticas, exequíveis e orientadas para a tomada de decisão em saúde</div>
-            </td>
-            <td class="criteria-weight">× 1,0</td>
-            <td class="rating-cell">
-              <div class="rating-group">
-                <button class="rating-btn" onclick="setRating('5c',1,1.0)" data-val="1">1</button>
-                <button class="rating-btn" onclick="setRating('5c',2,1.0)" data-val="2">2</button>
-                <button class="rating-btn" onclick="setRating('5c',3,1.0)" data-val="3">3</button>
-                <button class="rating-btn" onclick="setRating('5c',4,1.0)" data-val="4">4</button>
-                <button class="rating-btn" onclick="setRating('5c',5,1.0)" data-val="5">5</button>
-              </div>
-              <div class="rubric-labels"><div class="rubric-label">Insatisf.</div><div class="rubric-label">Regular</div><div class="rubric-label">Satisf.</div><div class="rubric-label">Bom</div><div class="rubric-label">Excelen.</div></div>
-            </td>
-            <td class="criteria-weight" id="pts-5c" style="color:var(--text)">—</td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="section-score-bar">
-        <span class="section-score-label">Seção 5</span>
-        <div class="section-progress"><div class="section-progress-fill" id="prog-5"></div></div>
-        <span class="section-score-value" id="label-sec-5">0 / 15 pts</span>
-      </div>
-      <div class="comment-area">
-        <label>Observações — Discussão Crítica</label>
-        <textarea placeholder="Capacidade analítica, olhar crítico, propostas de intervenção..."></textarea>
-      </div>
-    </div>
-  </div>
-
-  <!-- PAINEL FINAL -->
-  <div class="final-panel">
-    <div class="final-panel-title">Resultado Final</div>
-    <div class="scores-grid">
-      <div class="score-card">
-        <div class="score-card-label">Conteúdo Científico</div>
-        <div class="score-card-value" id="card-1">—</div>
-        <div class="score-card-sub">/ 25 pts</div>
-      </div>
-      <div class="score-card">
-        <div class="score-card-label">Metodologia</div>
-        <div class="score-card-value" id="card-2">—</div>
-        <div class="score-card-sub">/ 25 pts</div>
-      </div>
-      <div class="score-card">
-        <div class="score-card-label">Apresentação Oral</div>
-        <div class="score-card-value" id="card-3">—</div>
-        <div class="score-card-sub">/ 20 pts</div>
-      </div>
-      <div class="score-card">
-        <div class="score-card-label">Visualização de Dados</div>
-        <div class="score-card-value" id="card-4">—</div>
-        <div class="score-card-sub">/ 15 pts</div>
-      </div>
-      <div class="score-card">
-        <div class="score-card-label">Discussão Crítica</div>
-        <div class="score-card-value" id="card-5">—</div>
-        <div class="score-card-sub">/ 15 pts</div>
-      </div>
-    </div>
-
-    <div id="concept-wrap" style="margin-bottom:24px"></div>
-
-    <div class="feedback-global" style="margin-bottom:28px">
-      <label>Parecer Global do Avaliador</label>
-      <textarea id="parecer-global" placeholder="Síntese da avaliação, pontos de destaque, sugestões prioritárias para desenvolvimento do residente..."></textarea>
-    </div>
-
-    <div class="actions">
-      <button class="btn btn-gold" onclick="window.print()">⎙ Imprimir Ficha</button>
-      <button class="btn btn-primary" onclick="exportJSON()">↓ Exportar JSON</button>
-      <button class="btn btn-secondary" onclick="resetAll()">↺ Limpar Ficha</button>
-    </div>
-  </div>
-
-</div><!-- /main -->
+  <div id="prod-list"></div>
+</section>
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
 
 <script>
-const ratings = {};
-const sectionConfig = {
-  1: { max: 25, ids: ['1a','1b','1c','1d'] },
-  2: { max: 25, ids: ['2a','2b','2c','2d'] },
-  3: { max: 20, ids: ['3a','3b','3c','3d'] },
-  4: { max: 15, ids: ['4a','4b','4c'] },
-  5: { max: 15, ids: ['5a','5b','5c'] }
+/* ============ CONFIG ============ */
+const LEVELS=['Insatisfatório','Regular','Satisfatório','Bom','Excelente'];
+const SHORT=['Insatisf.','Regular','Satisf.','Bom','Excel.'];
+const SECTIONS=[
+ {n:1,group:'conteudo',w:1.25,title:'Conteúdo Científico & Fundamentação Teórica',ph:'Pontos fortes, lacunas identificadas, sugestões de melhoria…',crit:[
+  ['1a','Atualidade e relevância das referências','Utiliza fontes recentes, indexadas e pertinentes ao tema'],
+  ['1b','Domínio do tema e profundidade conceitual','Demonstra compreensão sólida dos conceitos epidemiológicos e clínicos'],
+  ['1c','Contextualização e justificativa','Apresenta o problema com clareza, situando-o no contexto de saúde pública'],
+  ['1d','Objetivos claros e coerentes','Os objetivos são mensuráveis, alinhados à pergunta de pesquisa e bem delimitados']]},
+ {n:2,group:'conteudo',w:1.25,title:'Metodologia & Rigor Epidemiológico',ph:'Rigor metodológico, uso de sistemas de informação em saúde, análise estatística…',crit:[
+  ['2a','Adequação do delineamento metodológico','O método escolhido é apropriado para responder à pergunta de pesquisa'],
+  ['2b','Qualidade e representatividade dos dados','Fonte de dados confiável, com justificativa da população/amostra utilizada'],
+  ['2c','Aplicação correta de indicadores e métricas','Indicadores epidemiológicos calculados e interpretados corretamente'],
+  ['2d','Limitações reconhecidas e vieses discutidos','Aborda vieses, confundidores e limitações do estudo com honestidade científica']]},
+ {n:3,group:'oral',w:1,title:'Apresentação Oral Técnico-Científica',ph:'Aspectos comunicativos, postura, gestão do tempo…',crit:[
+  ['3a','Clareza e fluência na exposição oral','Comunicação acessível, ritmo adequado, dicção e vocabulário técnico apropriado'],
+  ['3b','Gestão do tempo','Respeita o tempo estipulado sem comprometer conteúdo essencial'],
+  ['3c','Postura, segurança e engajamento','Demonstra confiança, contato visual e capacidade de engajar a audiência'],
+  ['3d','Resposta a perguntas e defesa das ideias','Responde com precisão, fundamenta posições e aceita críticas construtivas']]},
+ {n:4,group:'conteudo',w:1,title:'Visualização de Dados & Qualidade Visual',ph:'Qualidade dos gráficos, dashboards, uso de sistemas como SIVEP-Gripe…',crit:[
+  ['4a','Adequação do tipo de gráfico/tabela ao dado','O recurso visual comunica o dado de forma eficiente e sem distorção'],
+  ['4b','Clareza de títulos, legendas e eixos','Elementos visuais identificados, com unidades e fontes indicadas'],
+  ['4c','Estética e coerência visual dos slides','Design limpo, hierarquia tipográfica, paleta coerente e sem poluição visual']]},
+ {n:5,group:'conteudo',w:1,title:'Discussão Crítica & Interpretação de Resultados',ph:'Capacidade analítica, olhar crítico, propostas de intervenção…',crit:[
+  ['5a','Interpretação coerente dos resultados','Achados discutidos com base em evidências e sem extrapolações indevidas'],
+  ['5b','Comparação com literatura e protocolos vigentes','Resultados contextualizados com publicações e diretrizes do MS / OPAS / OMS'],
+  ['5c','Proposição de recomendações aplicáveis','Conclusões práticas, exequíveis e orientadas à tomada de decisão em saúde']]}
+];
+SECTIONS.forEach(s=>s.max=s.crit.length*5*s.w);
+const ALL_IDS=SECTIONS.flatMap(s=>s.crit.map(c=>c[0]));
+const GROUP_LABEL={conteudo:'Revisão do conteúdo',oral:'Apresentação oral'};
+const GROUP_MAX={conteudo:SECTIONS.filter(s=>s.group==='conteudo').reduce((a,s)=>a+s.max,0),oral:SECTIONS.filter(s=>s.group==='oral').reduce((a,s)=>a+s.max,0)};
+
+/* ============ ESTADO ============ */
+const KEY='ficha_pares_v1', DKEY='ficha_pares_rascunho_v1';
+let db=load(); let draft=loadDraft();
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&d.products&&d.reviews)return d}catch(e){}return{products:[],reviews:[],min:2}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(db))}catch(e){toast('Não foi possível salvar no navegador. Exporte o JSON.',1)}}
+function loadDraft(){try{const d=JSON.parse(localStorage.getItem(DKEY));if(d)return d}catch(e){}return{productId:'',avaliador:'',data:'',ratings:{},comments:{},parecer:''}}
+function saveDraft(){try{localStorage.setItem(DKEY,JSON.stringify(draft))}catch(e){}}
+
+/* ============ UTILS ============ */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt=n=>n.toFixed(1).replace('.',',');
+const norm=s=>String(s||'').trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/\s+/g,' ');
+const slug=s=>norm(s).replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const prodId=(t,a)=>slug(t)+'__'+slug(a);
+function toast(msg,bad){const t=$('#toast');t.textContent=msg;t.className='show'+(bad?' bad':'');clearTimeout(toast.h);toast.h=setTimeout(()=>t.className='',3500)}
+function concept(total){
+  if(total<40)return['Insuficiente','c-insuf'];if(total<60)return['Regular','c-reg'];
+  if(total<75)return['Bom','c-bom'];if(total<90)return['Ótimo','c-otimo'];return['Excelente','c-exc'];
+}
+function scoreOf(r){
+  const sec={};let conteudo=0,oral=0,answered=0;
+  SECTIONS.forEach(s=>{let v=0;s.crit.forEach(c=>{const x=r[c[0]];if(x){v+=x*s.w;answered++}});sec[s.n]=v;if(s.group==='oral')oral+=v;else conteudo+=v});
+  return{sec,conteudo,oral,total:conteudo+oral,answered};
+}
+function reviewsOf(pid){return db.reviews.filter(r=>r.productId===pid)}
+function validReviewers(pid){return reviewsOf(pid).length}
+
+/* ============ TABS ============ */
+function showView(v){
+  document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id==='view-'+v));
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.view===v));
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(v==='painel')renderPanel();
+}
+document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>showView(b.dataset.view));
+
+/* ============ FORM DE AVALIAÇÃO ============ */
+function buildForm(){
+  $('#sections').innerHTML=SECTIONS.map(s=>`
+  <details class="sec" open id="sec-${s.n}">
+    <summary>
+      <span class="sec-num">0${s.n}</span>
+      <span class="sec-title">${esc(s.title)}</span>
+      <span class="sec-tag ${s.group==='oral'?'oral':''}">${GROUP_LABEL[s.group]}</span>
+      <span class="sec-done" id="done-${s.n}"></span>
+      <span class="sec-pts" id="pts-${s.n}">0,0 / ${fmt(s.max)}</span>
+    </summary>
+    ${s.crit.map(c=>`
+    <fieldset class="criterion" id="crit-${c[0]}" style="border:0;border-bottom:1px solid var(--green-100)">
+      <legend class="crit-name">${esc(c[1])}</legend>
+      <div class="crit-desc">${esc(c[2])}</div>
+      <div class="scale">
+        ${[1,2,3,4,5].map(v=>`<label><input class="sr-only" type="radio" name="${c[0]}" value="${v}"><span class="opt"><b>${v}</b><small>${SHORT[v-1]}</small></span></label>`).join('')}
+      </div>
+      <div class="crit-pts" id="cp-${c[0]}"></div>
+    </fieldset>`).join('')}
+    <div class="sec-comment field">
+      <label for="com-${s.n}">Observações — ${esc(s.title)}</label>
+      <textarea id="com-${s.n}" data-com="${s.n}" placeholder="${esc(s.ph)}"></textarea>
+    </div>
+  </details>`).join('');
+}
+function fillProductSelect(){
+  const sel=$('#sel-produto');
+  sel.innerHTML='<option value="">Selecione o produto…</option>'+db.products.map(p=>`<option value="${esc(p.id)}">${esc(p.titulo)} — ${esc(p.autor)}</option>`).join('');
+  if(draft.productId&&db.products.some(p=>p.id===draft.productId))sel.value=draft.productId;else draft.productId='';
+  $('#count-prod').textContent=db.products.length;
+  $('#min-txt').textContent=db.min;$('#inp-min').value=db.min;
+}
+function applyDraftToForm(){
+  $('#inp-avaliador').value=draft.avaliador||'';
+  $('#inp-data').value=draft.data||new Date().toISOString().slice(0,10);
+  $('#parecer').value=draft.parecer||'';
+  ALL_IDS.forEach(id=>{const v=draft.ratings[id];document.querySelectorAll(`input[name="${id}"]`).forEach(i=>i.checked=(+i.value===v))});
+  SECTIONS.forEach(s=>$('#com-'+s.n).value=draft.comments[s.n]||'');
+  refresh();
+}
+function refresh(){
+  const sc=scoreOf(draft.ratings);
+  SECTIONS.forEach(s=>{
+    $('#pts-'+s.n).textContent=fmt(sc.sec[s.n])+' / '+fmt(s.max);
+    const done=s.crit.filter(c=>draft.ratings[c[0]]).length;
+    $('#done-'+s.n).textContent=done===s.crit.length?'✓ completo':done+'/'+s.crit.length;
+    s.crit.forEach(c=>{
+      const v=draft.ratings[c[0]];
+      $('#cp-'+c[0]).textContent=v?`${LEVELS[v-1]} · ${fmt(v*s.w)} pts`:'';
+      if(v)$('#crit-'+c[0]).classList.remove('missing');
+    });
+  });
+  const n=ALL_IDS.length,pct=Math.round(sc.answered/n*100);
+  $('#prog-txt').textContent=`${sc.answered} de ${n} critérios`;
+  $('#prog-pct').textContent=pct+'%';$('#prog-bar').style.width=pct+'%';
+  $('#tot').textContent=fmt(sc.total);
+  const [cn,cc]=concept(sc.total);
+  $('#result-box').innerHTML=`
+   <div class="cards">
+     <div class="mini"><div class="l">${GROUP_LABEL.conteudo}</div><div class="v">${fmt(sc.conteudo)}</div><div class="s">/ ${fmt(GROUP_MAX.conteudo)} pts</div></div>
+     <div class="mini"><div class="l">${GROUP_LABEL.oral}</div><div class="v">${fmt(sc.oral)}</div><div class="s">/ ${fmt(GROUP_MAX.oral)} pts</div></div>
+     <div class="mini"><div class="l">Total</div><div class="v">${fmt(sc.total)}</div><div class="s">/ 100 pts</div></div>
+   </div>
+   ${sc.answered===n?`<span class="concept ${cc}">${cn} · ${fmt(sc.total)} pontos</span>`:`<span class="concept c-pend">Faltam ${n-sc.answered} critério(s) para concluir</span>`}`;
+  renderBanner();
+}
+function renderBanner(){
+  const b=$('#prod-banner');const pid=draft.productId;
+  if(!db.products.length){b.innerHTML=`<div class="banner warn">Nenhum produto cadastrado ainda. Vá em <b>Produtos e resultados</b> e cadastre o produto que será apresentado.</div>`;return}
+  if(!pid){b.innerHTML='';return}
+  const p=db.products.find(x=>x.id===pid);const rv=reviewsOf(pid);
+  const mine=rv.find(r=>norm(r.avaliador)===norm(draft.avaliador));
+  const self=draft.avaliador&&norm(draft.avaliador)===norm(p.autor);
+  let cls='',msg='';
+  if(self){cls='bad';msg='O avaliador não pode ser o autor do produto. Revisão por pares exige outra pessoa.'}
+  else{
+    const falta=Math.max(0,db.min-rv.length);
+    msg=`<b>${rv.length} de ${db.min}</b> revisões já recebidas`+(rv.length?` (${rv.map(r=>esc(r.avaliador)).join(', ')})`:'')+'. '+(falta?`Faltam ${falta}.`:'Mínimo atingido; revisões extras são bem-vindas.');
+    if(mine)msg+=` <button type="button" class="btn sec small" id="btn-loadmine">Carregar minha avaliação anterior</button>`;
+    if(!falta)cls='';else cls='warn';
+  }
+  b.innerHTML=`<div class="banner ${cls}">${msg}</div>`;
+  const lb=$('#btn-loadmine');if(lb)lb.onclick=()=>{draft.ratings={...mine.ratings};draft.comments={...mine.comments};draft.parecer=mine.parecer||'';saveDraft();applyDraftToForm();toast('Avaliação anterior carregada. Ao enviar, ela será substituída.')};
+}
+
+/* eventos do formulário */
+$('#sel-produto').onchange=e=>{draft.productId=e.target.value;$('#f-produto').classList.remove('invalid');$('#e-produto').textContent='';saveDraft();refresh()};
+$('#inp-avaliador').oninput=e=>{draft.avaliador=e.target.value;$('#f-avaliador').classList.remove('invalid');$('#e-avaliador').textContent='';saveDraft();renderBanner()};
+$('#inp-data').onchange=e=>{draft.data=e.target.value;saveDraft()};
+$('#parecer').oninput=e=>{draft.parecer=e.target.value;saveDraft()};
+$('#sections').addEventListener('change',e=>{
+  if(e.target.type==='radio'){draft.ratings[e.target.name]=+e.target.value;saveDraft();refresh()}
+});
+$('#sections').addEventListener('input',e=>{
+  if(e.target.dataset.com){draft.comments[e.target.dataset.com]=e.target.value;saveDraft()}
+});
+$('#btn-next').onclick=()=>{
+  const id=ALL_IDS.find(i=>!draft.ratings[i]);
+  if(!id){toast('Todos os critérios já têm nota.');return}
+  const el=$('#crit-'+id);el.closest('details').open=true;
+  el.scrollIntoView({behavior:'smooth',block:'center'});
+  const first=el.querySelector('input');if(first)setTimeout(()=>first.focus({preventScroll:true}),400);
+};
+$('#btn-reset').onclick=()=>{
+  if(!confirm('Limpar o rascunho atual? As avaliações já enviadas não são afetadas.'))return;
+  draft={productId:'',avaliador:draft.avaliador,data:'',ratings:{},comments:{},parecer:''};saveDraft();fillProductSelect();applyDraftToForm();
+};
+$('#form').onsubmit=e=>{
+  e.preventDefault();
+  let ok=true,firstBad=null;
+  const p=db.products.find(x=>x.id===draft.productId);
+  if(!p){$('#f-produto').classList.add('invalid');$('#e-produto').textContent='Selecione o produto.';ok=false;firstBad=firstBad||$('#sel-produto')}
+  if(!draft.avaliador.trim()){$('#f-avaliador').classList.add('invalid');$('#e-avaliador').textContent='Informe o seu nome.';ok=false;firstBad=firstBad||$('#inp-avaliador')}
+  else if(p&&norm(draft.avaliador)===norm(p.autor)){$('#f-avaliador').classList.add('invalid');$('#e-avaliador').textContent='Você não pode avaliar o seu próprio produto.';ok=false;firstBad=firstBad||$('#inp-avaliador')}
+  const missing=ALL_IDS.filter(i=>!draft.ratings[i]);
+  missing.forEach(i=>{$('#crit-'+i).classList.add('missing');$('#crit-'+i).closest('details').open=true});
+  if(missing.length){ok=false;firstBad=firstBad||$('#crit-'+missing[0])}
+  if(!ok){toast(missing.length?`Faltam ${missing.length} critério(s) sem nota.`:'Corrija os campos destacados.',1);firstBad.scrollIntoView({behavior:'smooth',block:'center'});return}
+  const rev={
+    id:p.id+'|'+norm(draft.avaliador),productId:p.id,avaliador:draft.avaliador.trim(),
+    data:draft.data,ts:Date.now(),ratings:{...draft.ratings},comments:{...draft.comments},parecer:draft.parecer
+  };
+  const i=db.reviews.findIndex(r=>r.id===rev.id);
+  if(i>=0)db.reviews[i]=rev;else db.reviews.push(rev);
+  save();
+  const pid=p.id;const nome=draft.avaliador;
+  draft={productId:'',avaliador:nome,data:'',ratings:{},comments:{},parecer:''};saveDraft();
+  fillProductSelect();applyDraftToForm();
+  openIds.add(pid);showView('painel');
+  toast(i>=0?'Avaliação atualizada.':'Avaliação enviada. Obrigada!');
 };
 
-function setRating(id, val, weight) {
-  ratings[id] = { val, weight };
-  // Update buttons
-  const section = id.charAt(0);
-  const allBtns = document.querySelectorAll(`[onclick*="'${id}'"]`);
-  allBtns.forEach(btn => {
-    btn.classList.remove('active','level-1','level-2','level-3','level-4','level-5');
-    if (parseInt(btn.dataset.val) === val) {
-      btn.classList.add('active', `level-${val}`);
-    }
+/* ============ PAINEL ============ */
+const openIds=new Set();
+function renderPanel(){
+  $('#count-prod').textContent=db.products.length;
+  const box=$('#prod-list');
+  if(!db.products.length){box.innerHTML='<div class="card empty">Nenhum produto cadastrado ainda.</div>';return}
+  box.innerHTML=db.products.map(p=>{
+    const rv=reviewsOf(p.id);const n=rv.length;
+    const cls=n===0?'b-0':n<db.min?'b-1':'b-ok';
+    const label=n>=db.min?`✓ Completo · ${n} revisões`:`${n} de ${db.min} revisões`;
+    const open=openIds.has(p.id);
+    let body='';
+    if(n){
+      const scs=rv.map(r=>({r,s:scoreOf(r.ratings)}));
+      const avg=f=>scs.reduce((a,x)=>a+f(x.s),0)/scs.length;
+      const mT=avg(s=>s.total);const [cn,cc]=concept(mT);
+      body=`
+      <div class="cards">
+        <div class="mini"><div class="l">Conteúdo (média)</div><div class="v">${fmt(avg(s=>s.conteudo))}</div><div class="s">/ ${fmt(GROUP_MAX.conteudo)}</div></div>
+        <div class="mini"><div class="l">Apresentação oral (média)</div><div class="v">${fmt(avg(s=>s.oral))}</div><div class="s">/ ${fmt(GROUP_MAX.oral)}</div></div>
+        <div class="mini"><div class="l">Nota final (média)</div><div class="v">${fmt(mT)}</div><div class="s">/ 100</div></div>
+      </div>
+      ${n>=db.min?`<span class="concept ${cc}">${cn}</span>`:`<span class="concept c-pend">Provisório: faltam ${db.min-n} revisão(ões)</span>`}
+      <div class="scroll"><table class="t"><thead><tr><th>Revisor</th>${SECTIONS.map(s=>`<th class="n">S${s.n}${s.group==='oral'?' (oral)':''}</th>`).join('')}<th class="n">Total</th><th class="no-print"></th></tr></thead><tbody>
+        ${scs.map(x=>`<tr><td>${esc(x.r.avaliador)}<br><span class="hint">${esc(x.r.data||'')}</span></td>${SECTIONS.map(s=>`<td class="n">${fmt(x.s.sec[s.n])}</td>`).join('')}<td class="n">${fmt(x.s.total)}</td><td class="no-print"><button class="btn danger small" data-delrev="${esc(x.r.id)}">Excluir</button></td></tr>`).join('')}
+        <tr class="avg"><td>Média</td>${SECTIONS.map(s=>`<td class="n">${fmt(avg(q=>q.sec[s.n]))}</td>`).join('')}<td class="n">${fmt(mT)}</td><td class="no-print"></td></tr>
+      </tbody></table></div>
+      <div class="comments">${scs.map(x=>{
+        const parts=SECTIONS.filter(s=>(x.r.comments||{})[s.n]).map(s=>`<div><b>S${s.n}:</b> ${esc(x.r.comments[s.n])}</div>`).join('')+(x.r.parecer?`<div><b>Parecer:</b> ${esc(x.r.parecer)}</div>`:'');
+        return parts?`<blockquote><b>${esc(x.r.avaliador)}</b>${parts}</blockquote>`:'';
+      }).join('')}</div>`;
+    }else body='<p class="hint" style="margin-top:12px">Nenhuma revisão enviada.</p>';
+    return `<div class="prod">
+      <div class="prod-head">
+        <div class="info"><div class="t">${esc(p.titulo)}</div><div class="a">${esc(p.autor)}${p.periodo?' · '+esc(p.periodo):''}</div></div>
+        <span class="badge ${cls}">${label}</span>
+        <div class="row no-print">
+          <button class="btn small" data-aval="${esc(p.id)}">Avaliar</button>
+          <button class="btn sec small" data-toggle="${esc(p.id)}">${open?'Ocultar':'Ver resultados'}</button>
+          <button class="btn danger small" data-delprod="${esc(p.id)}">Excluir</button>
+        </div>
+      </div>
+      <div class="prod-body" style="display:${open?'block':'none'}">${body}</div>
+    </div>`;
+  }).join('');
+}
+$('#prod-list').onclick=e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.dataset.toggle){const id=t.dataset.toggle;openIds.has(id)?openIds.delete(id):openIds.add(id);renderPanel()}
+  else if(t.dataset.aval){draft.productId=t.dataset.aval;saveDraft();fillProductSelect();applyDraftToForm();showView('aval')}
+  else if(t.dataset.delrev){if(confirm('Excluir esta revisão?')){db.reviews=db.reviews.filter(r=>r.id!==t.dataset.delrev);save();renderPanel()}}
+  else if(t.dataset.delprod){const p=db.products.find(x=>x.id===t.dataset.delprod);if(confirm(`Excluir "${p.titulo}" e todas as revisões dele?`)){db.products=db.products.filter(x=>x.id!==p.id);db.reviews=db.reviews.filter(r=>r.productId!==p.id);save();fillProductSelect();renderPanel();refresh()}}
+};
+$('#form-prod').onsubmit=e=>{
+  e.preventDefault();
+  const t=$('#p-titulo').value.trim(),a=$('#p-autor').value.trim();
+  if(!t||!a){toast('Informe título e autor.',1);return}
+  const id=prodId(t,a);
+  if(db.products.some(p=>p.id===id)){toast('Esse produto já está cadastrado.',1);return}
+  db.products.push({id,titulo:t,autor:a,periodo:$('#p-periodo').value});
+  save();e.target.reset();fillProductSelect();renderPanel();toast('Produto cadastrado.');
+};
+$('#inp-min').onchange=e=>{db.min=Math.min(10,Math.max(1,parseInt(e.target.value)||2));save();fillProductSelect();renderPanel();renderBanner()};
+
+/* export / import */
+function download(name,content,type){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
+$('#btn-exp').onclick=()=>download('avaliacoes_pares_'+new Date().toISOString().slice(0,10)+'.json',JSON.stringify(db,null,2),'application/json');
+$('#btn-imp').onclick=()=>$('#file-imp').click();
+$('#file-imp').onchange=e=>{
+  const f=e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    try{
+      const d=JSON.parse(rd.result);if(!Array.isArray(d.products)||!Array.isArray(d.reviews))throw 0;
+      let np=0,nr=0;
+      d.products.forEach(p=>{if(p&&p.id&&!db.products.some(x=>x.id===p.id)){db.products.push({id:p.id,titulo:p.titulo,autor:p.autor,periodo:p.periodo||''});np++}});
+      d.reviews.forEach(r=>{
+        if(!r||!r.id||!db.products.some(p=>p.id===r.productId))return;
+        const i=db.reviews.findIndex(x=>x.id===r.id);
+        if(i<0){db.reviews.push(r);nr++}else if((r.ts||0)>(db.reviews[i].ts||0)){db.reviews[i]=r;nr++}
+      });
+      save();fillProductSelect();renderPanel();toast(`Importado: ${np} produto(s) novo(s) e ${nr} revisão(ões).`);
+    }catch(err){toast('Arquivo inválido.',1)}
+    e.target.value='';
+  };rd.readAsText(f);
+};
+$('#btn-csv').onclick=()=>{
+  const q=v=>'"'+String(v??'').replace(/"/g,'""')+'"';
+  const head=['Produto','Autor','Período','Nº revisores','Revisores','Média conteúdo (/'+GROUP_MAX.conteudo+')','Média oral (/'+GROUP_MAX.oral+')','Média total (/100)','Conceito','Status'];
+  const rows=db.products.map(p=>{
+    const rv=reviewsOf(p.id);const sc=rv.map(r=>scoreOf(r.ratings));
+    const m=f=>sc.length?(sc.reduce((a,s)=>a+f(s),0)/sc.length):0;
+    const mt=m(s=>s.total);
+    return[p.titulo,p.autor,p.periodo,rv.length,rv.map(r=>r.avaliador).join(' / '),fmt(m(s=>s.conteudo)),fmt(m(s=>s.oral)),fmt(mt),rv.length?concept(mt)[0]:'',rv.length>=db.min?'Completo':'Pendente'].map(q).join(';');
   });
-  // Update pts cell
-  const pts = (val * weight).toFixed(2).replace('.00','');
-  const cell = document.getElementById(`pts-${id}`);
-  if (cell) cell.textContent = pts + ' pts';
-  updateSection(parseInt(section));
-  updateTotal();
-}
+  download('resumo_avaliacoes.csv','\ufeff'+[head.map(q).join(';'),...rows].join('\n'),'text/csv;charset=utf-8');
+};
+$('#btn-print').onclick=()=>{db.products.forEach(p=>openIds.add(p.id));renderPanel();$('#view-painel').classList.add('print-me');window.print();$('#view-painel').classList.remove('print-me')};
 
-function updateSection(secNum) {
-  const cfg = sectionConfig[secNum];
-  let score = 0;
-  cfg.ids.forEach(id => {
-    if (ratings[id]) score += ratings[id].val * ratings[id].weight;
-  });
-  const pct = (score / cfg.max) * 100;
-  document.getElementById(`prog-${secNum}`).style.width = pct + '%';
-  document.getElementById(`label-sec-${secNum}`).textContent = score.toFixed(1) + ' / ' + cfg.max + ' pts';
-  document.getElementById(`sec-${secNum}-pts`).textContent = score.toFixed(1) + ' / ' + cfg.max + ' pts';
-  document.getElementById(`card-${secNum}`).textContent = score.toFixed(1);
-}
-
-function updateTotal() {
-  let total = 0;
-  [1,2,3,4,5].forEach(n => {
-    const cfg = sectionConfig[n];
-    cfg.ids.forEach(id => {
-      if (ratings[id]) total += ratings[id].val * ratings[id].weight;
-    });
-  });
-  document.getElementById('total-score').textContent = total.toFixed(1);
-  document.getElementById('total-pct').textContent = total.toFixed(1) + '%';
-  document.getElementById('total-bar').style.width = total + '%';
-  // Concept
-  let concept = '', cls = '';
-  if (total < 40) { concept = '✗ Insuficiente'; cls = 'insuficiente'; }
-  else if (total < 60) { concept = '△ Regular'; cls = 'regular'; }
-  else if (total < 75) { concept = '◎ Bom'; cls = 'bom'; }
-  else if (total < 90) { concept = '★ Ótimo'; cls = 'otimo'; }
-  else { concept = '✦ Excelente'; cls = 'excelente'; }
-  document.getElementById('concept-wrap').innerHTML =
-    `<div class="concept-badge ${cls}">${concept} &nbsp;·&nbsp; ${total.toFixed(1)} pontos</div>`;
-}
-
-function toggleSection(id) {
-  const sec = document.getElementById(id);
-  const body = document.getElementById(id + '-body');
-  if (sec.classList.contains('collapsed')) {
-    sec.classList.remove('collapsed');
-    body.style.maxHeight = body.scrollHeight + 'px';
-    setTimeout(() => body.style.maxHeight = 'none', 350);
-  } else {
-    body.style.maxHeight = body.scrollHeight + 'px';
-    requestAnimationFrame(() => {
-      sec.classList.add('collapsed');
-    });
-  }
-}
-
-function exportJSON() {
-  const data = {
-    residente: document.getElementById('meta-residente').value,
-    avaliador: document.getElementById('meta-avaliador').value,
-    titulo: document.getElementById('meta-titulo').value,
-    data: document.getElementById('meta-data').value,
-    periodo: document.getElementById('meta-periodo').value,
-    ratings,
-    parecer: document.getElementById('parecer-global').value,
-    total: document.getElementById('total-score').textContent
-  };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'avaliacao_' + (data.residente.replace(/\s+/g,'_') || 'residente') + '.json';
-  a.click();
-}
-
-function resetAll() {
-  if (!confirm('Deseja realmente limpar toda a avaliação?')) return;
-  Object.keys(ratings).forEach(k => delete ratings[k]);
-  document.querySelectorAll('.rating-btn').forEach(b => b.classList.remove('active','level-1','level-2','level-3','level-4','level-5'));
-  document.querySelectorAll('[id^="pts-"]').forEach(el => el.textContent = '—');
-  document.querySelectorAll('textarea').forEach(t => t.value = '');
-  document.querySelectorAll('input').forEach(i => i.value = '');
-  document.querySelectorAll('.section-progress-fill').forEach(p => p.style.width = '0%');
-  document.querySelectorAll('[id^="label-sec-"]').forEach((el, i) => {
-    const maxes = [25,25,20,15,15];
-    el.textContent = '0 / ' + maxes[i] + ' pts';
-  });
-  document.querySelectorAll('[id^="sec-"][id$="-pts"]').forEach((el, i) => {
-    const maxes = [25,25,20,15,15];
-    el.textContent = '0 / ' + maxes[i] + ' pts';
-  });
-  document.querySelectorAll('[id^="card-"]').forEach(el => el.textContent = '—');
-  document.getElementById('total-score').textContent = '0';
-  document.getElementById('total-pct').textContent = '0%';
-  document.getElementById('total-bar').style.width = '0%';
-  document.getElementById('concept-wrap').innerHTML = '';
-}
-
-// Set today's date
-document.getElementById('meta-data').valueAsDate = new Date();
-// Init section body heights
-document.querySelectorAll('.section-body').forEach(b => b.style.maxHeight = 'none');
+/* ============ INIT ============ */
+buildForm();fillProductSelect();applyDraftToForm();
 </script>
 </body>
 </html>
